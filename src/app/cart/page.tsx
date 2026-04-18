@@ -3,13 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-
-function formatPrice(n: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(n);
-}
+import { formatPrice } from "@/lib/format-price";
 
 export default function CartPage() {
   const { lines, subtotal, setQuantity, removeLine } = useCart();
@@ -118,7 +112,11 @@ export default function CartPage() {
                 </span>
               </div>
               <p className="mt-2 text-xs text-earth-muted">
-                Shipping & taxes calculated at checkout. 100% natural guarantee.
+                Shipping & taxes calculated at checkout. See{" "}
+                <Link href="/shipping-returns" className="font-medium text-earth underline-offset-2 hover:underline">
+                  shipping & returns
+                </Link>
+                .
               </p>
               <button
                 type="button"

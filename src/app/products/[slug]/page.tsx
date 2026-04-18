@@ -1,7 +1,10 @@
+import { JsonLd } from "@/components/seo/JsonLd";
 import { ProductGallery } from "@/components/products/ProductGallery";
 import { ProductStickyBar } from "@/components/products/ProductStickyBar";
 import { TrustBadges } from "@/components/products/TrustBadges";
+import { formatPrice } from "@/lib/format-price";
 import { getProductBySlug, getAllSlugs } from "@/lib/products";
+import { productJsonLd } from "@/lib/seo/json-ld";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -23,13 +26,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-function formatPrice(n: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(n);
-}
-
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
   const product = getProductBySlug(slug);
@@ -37,6 +33,7 @@ export default async function ProductPage({ params }: Props) {
 
   return (
     <>
+      <JsonLd data={productJsonLd(product)} />
       <article className="pb-28 lg:pb-16">
         <div className="mx-auto max-w-6xl px-4 pt-24 sm:px-6 sm:pt-28 lg:px-8">
           <nav className="text-sm text-earth-muted">
@@ -89,31 +86,53 @@ export default async function ProductPage({ params }: Props) {
             </div>
           </div>
 
-          <div className="mt-20 grid gap-12 border-t border-earth/10 pt-16 lg:grid-cols-3">
-            <section>
-              <h2 className="font-serif text-xl text-earth">Description</h2>
-              <p className="mt-4 text-earth-muted leading-relaxed">
-                {product.description}
+          <div className="mt-20 space-y-16 border-t border-earth/10 pt-16">
+            <div className="grid gap-12 lg:grid-cols-3">
+              <section>
+                <h2 className="font-serif text-xl text-earth">Description</h2>
+                <p className="mt-4 text-earth-muted leading-relaxed">
+                  {product.description}
+                </p>
+              </section>
+              <section>
+                <h2 className="font-serif text-xl text-earth">Benefits</h2>
+                <ul className="mt-4 space-y-3 text-earth-muted">
+                  {product.benefits.map((b) => (
+                    <li key={b} className="flex gap-3">
+                      <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-honey" />
+                      {b}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+              <section>
+                <h2 className="font-serif text-xl text-earth">Ingredients</h2>
+                <ul className="mt-4 space-y-2 text-earth-muted">
+                  {product.ingredients.map((ing) => (
+                    <li key={ing}>{ing}</li>
+                  ))}
+                </ul>
+              </section>
+            </div>
+
+            <section className="rounded-2xl border border-earth/10 bg-gradient-to-br from-beige/50 to-white/80 p-8 shadow-soft sm:p-10">
+              <h2 className="font-serif text-2xl text-earth">How to use</h2>
+              <p className="mt-2 text-sm text-earth-muted">
+                Follow these steps for best results. Adjust amounts for your hair density and length.
               </p>
-            </section>
-            <section>
-              <h2 className="font-serif text-xl text-earth">Benefits</h2>
-              <ul className="mt-4 space-y-3 text-earth-muted">
-                {product.benefits.map((b) => (
-                  <li key={b} className="flex gap-3">
-                    <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-honey" />
-                    {b}
+              <ol className="mt-8 space-y-3">
+                {product.howToUse.map((step, i) => (
+                  <li key={step} className="flex gap-4">
+                    <span
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-honey text-sm font-bold text-earth"
+                      aria-hidden
+                    >
+                      {i + 1}
+                    </span>
+                    <p className="pt-1 text-earth-muted leading-relaxed">{step}</p>
                   </li>
                 ))}
-              </ul>
-            </section>
-            <section>
-              <h2 className="font-serif text-xl text-earth">Ingredients</h2>
-              <ul className="mt-4 space-y-2 text-earth-muted">
-                {product.ingredients.map((ing) => (
-                  <li key={ing}>{ing}</li>
-                ))}
-              </ul>
+              </ol>
             </section>
           </div>
         </div>

@@ -4,17 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/lib/types";
 import { useCart } from "@/context/CartContext";
+import { formatPrice } from "@/lib/format-price";
 
 type ProductCardProps = {
   product: Product;
 };
-
-function formatPrice(n: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(n);
-}
 
 export function ProductCard({ product }: ProductCardProps) {
   const { addItem } = useCart();
@@ -56,7 +50,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <button
             type="button"
             onClick={() => addItem(product)}
-            className="shrink-0 rounded-xl bg-earth px-4 py-2.5 text-xs font-semibold text-beige transition hover:bg-honey hover:text-earth hover:shadow-glow"
+            className="shrink-0 rounded-xl bg-earth px-4 py-2.5 text-xs font-semibold text-beige transition hover:bg-honey hover:text-earth hover:shadow-glow active:scale-[0.97]"
           >
             Add to Cart
           </button>

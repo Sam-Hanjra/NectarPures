@@ -9,5 +9,7 @@ export type Product = {
   images: string[];
   benefits: string[];
   ingredients: string[];
+  /** Short numbered steps for product detail page */
+  howToUse: string[];
   badge?: string;
 };

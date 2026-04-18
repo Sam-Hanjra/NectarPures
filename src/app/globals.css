@@ -63,6 +63,68 @@
   }
 }
 
+@keyframes cart-badge-pop {
+  0% {
+    transform: scale(0.75);
+    opacity: 0.9;
+  }
+  55% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-cart-badge-pop {
+  animation: cart-badge-pop 0.48s cubic-bezier(0.34, 1.45, 0.64, 1);
+}
+
+@keyframes cart-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-cart-toast-in {
+  animation: cart-toast-in 0.38s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-cart-badge-pop,
+  .animate-cart-toast-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@layer base {
+  /* Native buttons default to `cursor: default` in many UA stylesheets */
+  button:not(:disabled),
+  [type="button"]:not(:disabled),
+  [type="submit"]:not(:disabled),
+  [type="reset"]:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary {
+    cursor: pointer;
+  }
+  a[href] {
+    cursor: pointer;
+  }
+  button:disabled,
+  [type="submit"]:disabled,
+  [type="button"]:disabled {
+    cursor: not-allowed;
+  }
+}
+
 body {
   background-color: var(--cream);
   background-image: radial-gradient(

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NewsletterForm } from "@/components/layout/NewsletterForm";
 
 const social = [
   { label: "Instagram", href: "https://instagram.com" },
@@ -9,8 +10,8 @@ export function Footer() {
   return (
     <footer className="mt-24 border-t border-earth/10 bg-earth text-beige/95">
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-3">
-          <div>
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-12 lg:gap-8">
+          <div className="lg:col-span-4">
             <p className="font-serif text-2xl text-beige">Nectar Pures</p>
             <p className="mt-3 max-w-sm text-sm leading-relaxed text-beige/75">
               Organic hair oils—cold-pressed, silicone-free, and blended in
@@ -18,7 +19,7 @@ export function Footer() {
               cared for.
             </p>
           </div>
-          <div>
+          <div className="lg:col-span-2">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-honey/90">
               Explore
             </p>
@@ -45,7 +46,27 @@ export function Footer() {
               </li>
             </ul>
           </div>
-          <div>
+          <div className="lg:col-span-3">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-honey/90">
+              Help
+            </p>
+            <ul className="mt-4 space-y-2 text-sm">
+              <li>
+                <Link href="/faq" className="hover:text-honey">
+                  FAQ
+                </Link>
+              </li>
+              <li>
+                <Link href="/shipping-returns" className="hover:text-honey">
+                  Shipping & returns
+                </Link>
+              </li>
+            </ul>
+            <p className="mt-6 text-xs text-beige/55">
+              hello@nectarpures.example
+            </p>
+          </div>
+          <div className="lg:col-span-3">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-honey/90">
               Connect
             </p>
@@ -63,9 +84,7 @@ export function Footer() {
                 </li>
               ))}
             </ul>
-            <p className="mt-6 text-xs text-beige/55">
-              hello@nectarpures.example
-            </p>
+            <NewsletterForm />
           </div>
         </div>
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-beige/10 pt-8 text-xs text-beige/50 sm:flex-row sm:items-center">

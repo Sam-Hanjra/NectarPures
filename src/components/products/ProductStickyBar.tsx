@@ -2,13 +2,7 @@
 
 import type { Product } from "@/lib/types";
 import { useCart } from "@/context/CartContext";
-
-function formatPrice(n: number) {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-  }).format(n);
-}
+import { formatPrice } from "@/lib/format-price";
 
 export function ProductStickyBar({ product }: { product: Product }) {
   const { addItem } = useCart();
@@ -23,7 +17,7 @@ export function ProductStickyBar({ product }: { product: Product }) {
         <button
           type="button"
           onClick={() => addItem(product)}
-          className="min-w-[10rem] rounded-2xl bg-honey px-6 py-3 text-sm font-semibold text-earth shadow-glow transition hover:bg-[#ffc21a]"
+          className="min-w-[10rem] rounded-2xl bg-honey px-6 py-3 text-sm font-semibold text-earth shadow-glow transition hover:bg-[#ffc21a] active:scale-[0.98]"
         >
           Add to Cart
         </button>

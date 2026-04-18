@@ -4,6 +4,7 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
@@ -19,6 +20,10 @@ type CartContextValue = {
   lines: CartLine[];
   itemCount: number;
   subtotal: number;
+  /** Increments on every `addItem` — use for cart icon / toast animations */
+  addSequence: number;
+  /** Set briefly after add for toast copy; cleared automatically */
+  lastAddedProductName: string | null;
   addItem: (product: Product, quantity?: number) => void;
   setQuantity: (productId: string, quantity: number) => void;
   removeLine: (productId: string) => void;
@@ -29,6 +34,8 @@ const CartContext = createContext<CartContextValue | null>(null);
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>([]);
+  const [addSequence, setAddSequence] = useState(0);
+  const [lastAddedProductName, setLastAddedProductName] = useState<string | null>(null);
 
   const addItem = useCallback((product: Product, quantity = 1) => {
     setLines((prev) => {
@@ -43,7 +50,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
       };
       return next;
     });
+    setAddSequence((n) => n + 1);
+    setLastAddedProductName(product.name);
   }, []);
+
+  useEffect(() => {
+    if (addSequence === 0) return;
+    const t = window.setTimeout(() => setLastAddedProductName(null), 2800);
+    return () => window.clearTimeout(t);
+  }, [addSequence]);
 
   const setQuantity = useCallback((productId: string, quantity: number) => {
     if (quantity < 1) {
@@ -73,12 +88,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
       lines,
       itemCount,
       subtotal,
+      addSequence,
+      lastAddedProductName,
       addItem,
       setQuantity,
       removeLine,
       clear,
     };
-  }, [lines, addItem, setQuantity, removeLine, clear]);
+  }, [lines, addSequence, lastAddedProductName, addItem, setQuantity, removeLine, clear]);
 
   return (
     <CartContext.Provider value={value}>{children}</CartContext.Provider>

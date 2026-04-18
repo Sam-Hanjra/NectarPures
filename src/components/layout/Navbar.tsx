@@ -8,6 +8,7 @@ import { useCart } from "@/context/CartContext";
 const links = [
   { href: "/#featured", label: "Shop" },
   { href: "/blog", label: "Blog" },
+  { href: "/faq", label: "FAQ" },
   { href: "/#story", label: "Our Story" },
   { href: "/#testimonials", label: "Reviews" },
 ];
@@ -15,16 +16,18 @@ const links = [
 function CartLink({
   transparent,
   itemCount,
+  addSequence,
   className = "",
 }: {
   transparent: boolean;
   itemCount: number;
+  addSequence: number;
   className?: string;
 }) {
   return (
     <Link
       href="/cart"
-      className={`relative inline-flex rounded-2xl px-3 py-2 text-sm font-medium transition ${
+      className={`relative inline-flex rounded-2xl px-3 py-2 text-sm font-medium transition active:scale-[0.98] ${
         transparent
           ? "bg-white/15 text-white hover:bg-white/25"
           : "bg-beige/80 text-earth hover:bg-beige"
@@ -32,7 +35,10 @@ function CartLink({
     >
       Cart
       {itemCount > 0 && (
-        <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-honey px-1 text-[10px] font-semibold text-earth">
+        <span
+          key={addSequence}
+          className="absolute -right-1 -top-1 flex h-5 min-w-5 animate-cart-badge-pop items-center justify-center rounded-full bg-honey px-1 text-[10px] font-semibold text-earth motion-reduce:animate-none"
+        >
           {itemCount > 9 ? "9+" : itemCount}
         </span>
       )}
@@ -43,7 +49,7 @@ function CartLink({
 export function Navbar() {
   const [solid, setSolid] = useState(false);
   const pathname = usePathname();
-  const { itemCount } = useCart();
+  const { itemCount, addSequence } = useCart();
   const isHome = pathname === "/";
 
   useEffect(() => {
@@ -76,7 +82,12 @@ export function Navbar() {
           >
             Nectar Pures
           </Link>
-          <CartLink transparent={transparent} itemCount={itemCount} className="md:hidden" />
+          <CartLink
+            transparent={transparent}
+            itemCount={itemCount}
+            addSequence={addSequence}
+            className="md:hidden"
+          />
         </div>
 
         <ul className="col-span-2 flex items-center justify-center gap-6 text-sm font-medium tracking-wide md:col-span-1 md:gap-8">
@@ -90,7 +101,7 @@ export function Navbar() {
         </ul>
 
         <div className="col-span-2 hidden justify-end md:col-span-1 md:flex">
-          <CartLink transparent={transparent} itemCount={itemCount} />
+          <CartLink transparent={transparent} itemCount={itemCount} addSequence={addSequence} />
         </div>
       </nav>
     </header>

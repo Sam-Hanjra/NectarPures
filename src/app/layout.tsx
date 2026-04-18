@@ -1,9 +1,13 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
+import { AddedToCartToast } from "@/components/cart/AddedToCartToast";
 import { CartProvider } from "@/context/CartContext";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { organizationJsonLd } from "@/lib/seo/json-ld";
+import { getSiteUrl } from "@/lib/site";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -18,6 +22,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(getSiteUrl()),
   title: {
     default: "Nectar Pures | Organic Hair Oil",
     template: "%s | Nectar Pures",
@@ -37,10 +42,12 @@ export default function RootLayout({
       className={`${inter.variable} ${playfair.variable} h-full scroll-smooth antialiased`}
     >
       <body className="min-h-full flex flex-col font-sans text-earth">
+        <JsonLd data={organizationJsonLd()} />
         <CartProvider>
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
+          <AddedToCartToast />
         </CartProvider>
       </body>
     </html>

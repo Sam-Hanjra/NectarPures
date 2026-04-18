@@ -6,6 +6,8 @@ import { notFound } from "next/navigation";
 import { BlogBreadcrumbs } from "@/components/blog/BlogBreadcrumbs";
 import { BlogPostBody } from "@/components/blog/BlogPostBody";
 import { RelatedPosts } from "@/components/blog/RelatedPosts";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { articleJsonLd } from "@/lib/seo/json-ld";
 import { getAllSlugs, getBlogPostBySlug, getRelatedPosts } from "@/lib/blog";
 import { formatReadingTime } from "@/lib/utils/reading-time";
 
@@ -34,6 +36,7 @@ export default async function BlogArticlePage({ params }: Props) {
 
   return (
     <article className="pb-24 pt-24 sm:pt-28">
+      <JsonLd data={articleJsonLd(post)} />
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
         <BlogBreadcrumbs
           items={[
