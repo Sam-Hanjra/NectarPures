@@ -29,6 +29,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/blog" className="hover:text-honey">
+                  Blog
+                </Link>
+              </li>
+              <li>
                 <Link href="/#story" className="hover:text-honey">
                   Our Story
                 </Link>
